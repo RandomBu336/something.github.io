@@ -50,7 +50,7 @@ function App() {
     try {
       console.log("7. SENDING TO SERVER...");
 
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await fetch(`https://k-students-union-web.onrender.com${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
