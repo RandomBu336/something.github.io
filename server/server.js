@@ -143,10 +143,14 @@ app.post("/login", async (req, res) => {
     })
 
   } catch (error) {
+    console.error("===== SIGNUP ERROR =====")
     console.error(error)
+    console.error("MESSAGE:", error.message)
+    console.error("STACK:", error.stack)
 
     res.status(500).json({
-      message: "Something went wrong."
+      message: "Something went wrong.",
+      error: error.message
     })
   }
 })
