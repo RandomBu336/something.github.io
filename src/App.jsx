@@ -19,71 +19,89 @@ function App() {
   const [gradeLevel, setGradeLevel] = useState("")
 
   async function handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
 
-    console.log("1. BUTTON CLICKED");
-    console.log("2. PHONE:", phone);
+    console.log("1. BUTTON CLICKED")
+    console.log("2. PHONE:", phone)
 
     if (!phone) {
-      console.log("3. PHONE IS EMPTY");
-      setError("Please enter a phone number.");
-      return;
+      console.log("3. PHONE IS EMPTY")
+      setError("Please enter a phone number.")
+      return
     }
 
-    console.log("3. PHONE EXISTS");
+    console.log("3. PHONE EXISTS")
 
-    const valid = isValidPhoneNumber(phone);
+    const valid = isValidPhoneNumber(phone)
 
-    console.log("4. PHONE VALID:", valid);
+    console.log("4. PHONE VALID:", valid)
 
     if (!valid) {
-      console.log("5. PHONE INVALID");
-      setError("Please enter a valid phone number.");
-      return;
+      console.log("5. PHONE INVALID")
+      setError("Please enter a valid phone number.")
+      return
     }
 
-    console.log("6. PHONE IS VALID");
-    setError("");
+    console.log("6. PHONE IS VALID")
 
-    const endpoint = isLogin ? "/login" : "/signup";
+    setError("")
+
+    const endpoint = isLogin ? "/login" : "/signup"
 
     try {
-      console.log("7. SENDING TO SERVER...");
+      console.log("7. SENDING TO SERVER...")
+      console.log("ENDPOINT:", endpoint)
 
-      const response = await fetch(`https://k-students-union-web.onrender.com${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          gender,
-          age,
-          schoolAttending,
-          phone,
-          gradeLevel,
-        }),
-      });
+      const response = await fetch(
+        `https://k-students-union-web.onrender.com${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            gender,
+            age,
+            schoolAttending,
+            phone,
+            gradeLevel,
+          }),
+        }
+      )
 
-      console.log("8. SERVER STATUS:", response.status);
+      console.log("8. SERVER STATUS:", response.status)
 
-      const data = await response.json();
+      const data = await response.json()
 
-      console.log("9. SERVER RESPONSE:", data);
+      console.log("9. SERVER RESPONSE:", data)
 
       if (!response.ok) {
-        setError(data.error || data.message || "Something went wrong.");
-        return;
+        console.error("SERVER RETURNED ERROR:", data)
+
+        setError(
+          data.error ||
+          data.message ||
+          `Server error (${response.status})`
+        )
+
+        return
       }
 
-      setError("");
-      alert(data.message || "Account created successfully!");
+      console.log("10. SUCCESS!")
+
+      setError("")
+
+      alert(data.message || "Account created successfully!")
 
     } catch (error) {
-      console.error("SERVER ERROR:", error);
-      setError("Could not connect to the server.");
+      console.error("SERVER CONNECTION ERROR:", error)
+
+      setError(
+        "Could not connect to the server. Please try again."
+      )
     }
   }
 
